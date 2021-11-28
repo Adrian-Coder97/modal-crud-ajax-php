@@ -17,6 +17,10 @@
         include("partials/navbar.php");
         include("partials/aside.php");
         ?>
+        <!-- ************************************ TOAST ************************************-->
+        <div id="toastContainer" class="toast-container position-absolute bottom-0 end-0">
+
+        </div>
         <div class="row d-flex justify-content-center">
             <!-- ************************************ Modal ************************************-->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -65,7 +69,7 @@
                             <td>
                                 <!-- Button trigger modal -->
                                 <button id="btnEditar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                    Edit
+                                    Editar
                                 </button>
                                 <button id="btnEliminar" class="btn btn-danger">Eliminar</button>
                             </td>
@@ -105,6 +109,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </body>
 
