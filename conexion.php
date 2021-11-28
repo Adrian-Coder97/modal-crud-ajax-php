@@ -57,7 +57,16 @@ if (isset($_GET["actualizar"])) {
     echo json_encode(["success" => 1]);
     exit();
 }
-
+// ************************************ BUSCAR ************************************
+if (isset($_GET["buscar"])) {
+    $texto = $_GET["buscar"];
+    $sql_leer = "SELECT * FROM `datos` WHERE `nombre` LIKE '%{$texto}%';";
+    $gsent = $pdo->prepare($sql_leer);
+    $gsent->execute();
+    $lista = $gsent->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($lista);
+    exit();
+}
 // ************************************ Leer ************************************
 $sql_leer = "SELECT * FROM datos";
 $gsent = $pdo->prepare($sql_leer);

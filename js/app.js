@@ -1,5 +1,3 @@
-
-
 // ************************************ Insertar ************************************
 $("#btnEnviar").click(function () {
     insertar();
@@ -97,14 +95,42 @@ function editar() {
 // ************************************ Toast ************************************
 var option = {
     animation: true,
-    delay: 2000
+    delay: 4000
 }
 function tostear(mensaje) {
-    $toast = '<div id="tostada" class="toast" role="alert" aria-live="assertive" aria-atomic="true"><div class="toast-header"><strong class="me-auto">Exito</strong><small class="text-muted">Ahora</small><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button></div><div class="toast-body">' + mensaje + ' </div></div>';
-    $("#toastContainer").append($toast)
+    $toast = '<div id="tostada" class="toast" role="alert" aria-live="assertive" aria-atomic="true"><div class="toast-header bg-primary text-white"><strong class="me-auto">Exito</strong><small>Ahora</small><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button></div><div class="toast-body">' + mensaje + ' </div></div>';
+    $("#toastContainer").append($toast);
     var tostadas = document.querySelectorAll("#tostada");
     var ultimaTostada = tostadas[tostadas.length - 1];
-    var toastElement = new bootstrap.Toast(ultimaTostada, option)
+    var toastElement = new bootstrap.Toast(ultimaTostada, option);
     toastElement.show();
     mensaje = "";
+}
+
+// ************************************ Busqueda ************************************
+
+function buscar() {
+    var texto = $("#inputBuscar").val()
+    if (texto == "") {//si no hay nada en el input volvemos a mostrar todo 
+        consultar();
+    } else {
+        $('#tabla').empty();
+        $.getJSON("conexion.php?buscar=" + texto, function (registros) {//jqgetjson
+            //console.log(registros);
+            var cosas = [];
+            $.each(registros, function (llave, valor) {
+                if (llave >= 0) {
+                    var template = "<tr class='text-center'>";
+                    template += "<td>" + valor.id + "</td>";
+                    template += "<td>" + valor.nombre + "</td>";
+                    template += "<td>" + valor.precio + "</td>";
+                    template += '<td> <button id="btnEditar" type="button" class="btn btn-primary" onclick="seleccionar(' + valor.id + ')" data-bs-toggle="modal" data-bs-target="#exampleModal1">Editar</button> | ';
+                    template += '<input class="btn btn-danger" type="button" onclick="borrar(' + valor.id + ')" value="Borrar" > </td>';
+                    template += "</tr>";
+                    cosas.push(template);
+                }
+            })
+            $('#tabla').append(cosas.join(""));
+        });
+    }
 }

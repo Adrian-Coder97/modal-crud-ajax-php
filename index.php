@@ -51,6 +51,10 @@
                 </div>
             </div>
             <div class="col-6">
+                <!-- ************************************ BUSQUEDA ************************************-->
+                <form>
+                    <input oninput="buscar()" id="inputBuscar" class="form-control" type="text" placeholder="Buscar...">
+                </form>
                 <!-- ************************************ TABLE ************************************-->
                 <table class="table table-bordered mt-2">
                     <thead>
