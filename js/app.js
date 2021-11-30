@@ -1,3 +1,7 @@
+$(document).ready(function () {
+
+});
+
 // ************************************ Insertar ************************************
 $("#btnEnviar").click(function () {
     insertar();
@@ -43,6 +47,65 @@ function consultar() {
         })
         $('#tabla').append(cosas.join(""));
         //console.log(registros);
+
+        // ************************************ Paginacion ************************************
+        $('#paginacion').empty();
+        var totalCosas = cosas.length, limitePorPagina = 5, totalPaginas = Math.ceil(totalCosas / limitePorPagina);
+        $('#tabla tr:gt(' + (limitePorPagina - 1) + ')').hide();//ocultar los elementos si son mas de 5
+        $('#paginacion').append('<li id="prev-page" class="page-item"><a class="page-link" href="#">Previous</a></li>');
+        $('#paginacion').append('<li class="page-item paginaActual active"><a class="page-link" href="#">1</a></li>');//boton 1 con clase active
+        for (var i = 2; i <= totalPaginas; i++) {
+            $('#paginacion').append('<li class="page-item paginaActual"><a class="page-link" href="#">' + i + '</a></li>');
+        }
+        $('#paginacion').append('<li id="next-page" class="page-item"><a class="page-link" href="#">Next</a></li>');
+        $("#paginacion li.paginaActual").on("click", function () {
+            if ($(this).hasClass("active")) {//verificar si el elemento tiene la clase active (si si lo tiene no hacemos nada)
+                return false;
+            } else {
+                var paginaActual = $(this).index();//obtener el index de la pagina a la que se dio clic 
+                $("#paginacion li").removeClass("active");//quitar la clase active de todos los elementos
+                $(this).addClass("active");
+                $('#tabla tr').hide();
+                var granTotal = limitePorPagina * paginaActual;
+                for (var i = granTotal - limitePorPagina; i < granTotal; i++) {
+                    $('#tabla tr:eq(' + i + ')').show();
+                }
+            }
+        })
+        //funcionamiento de boton next: 
+        $("#next-page").on("click", function () {
+            var paginaActual = $("#paginacion li.active").index();//obtener pagina activa
+            if (paginaActual === totalPaginas) {//si da clic en next pero esta en la ultima pagina no hacer nada
+                return false;
+            } else {
+                paginaActual++;
+                $("#paginacion li").removeClass("active");//quitar la clase active de todos los elementos
+                $('#tabla tr').hide();
+                var granTotal = limitePorPagina * paginaActual;
+                for (var i = granTotal - limitePorPagina; i < granTotal; i++) {
+                    $('#tabla tr:eq(' + i + ')').show();
+                }
+                $("#paginacion li.paginaActual:eq(" + (paginaActual - 1) + ")").addClass("active");
+            }
+        })
+
+        //funcionamiento de boton prev: 
+        $("#prev-page").on("click", function () {
+            var paginaActual = $("#paginacion li.active").index();//obtener pagina activa
+            if (paginaActual === 1) {//si da clic en prev pero esta en la pagina 1 no hacer nada
+                return false;
+            } else {
+                paginaActual--;
+                $("#paginacion li").removeClass("active");//quitar la clase active de todos los elementos
+                $('#tabla tr').hide();
+                var granTotal = limitePorPagina * paginaActual;
+                for (var i = granTotal - limitePorPagina; i < granTotal; i++) {
+                    $('#tabla tr:eq(' + i + ')').show();
+                }
+                $("#paginacion li.paginaActual:eq(" + (paginaActual - 1) + ")").addClass("active");
+            }
+        })
+
     });
 }
 consultar();
@@ -113,7 +176,9 @@ function buscar() {
     var texto = $("#inputBuscar").val()
     if (texto == "") {//si no hay nada en el input volvemos a mostrar todo 
         consultar();
+        $('#paginacion').show();
     } else {
+        $('#paginacion').hide();//ocultar paginacion
         $('#tabla').empty();
         $.getJSON("conexion.php?buscar=" + texto, function (registros) {//jqgetjson
             //console.log(registros);

@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-6 mt-2">
                 <!-- ************************************ BUSQUEDA ************************************-->
                 <form>
                     <input oninput="buscar()" id="inputBuscar" class="form-control" type="text" placeholder="Buscar...">
@@ -81,8 +81,10 @@
                     </tbody>
                 </table>
             </div>
-
-
+            <!-- ************************************ PAGINACION ************************************-->
+            <ul id="paginacion" class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            </ul>
 
             <!-- Edit Modal -->
             <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
